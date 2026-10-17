@@ -1,0 +1,99 @@
+# Configuração i3 convertida da config do Sway
+# Arquivo: ~/.config/i3/config
+
+### Variáveis
+set $mod Mod4
+set $term alacritty
+set $menu rofi -show drun
+
+### Aplicativos na inicialização
+exec --no-startup-id dunst
+# exec --no-startup-id planify -b  # Desativado: ainda não estou usando o Planify.
+
+### Papel de parede (Xorg) — requer feh
+# O Sway usava DP-2 e HDMI-A-1; os nomes podem ser diferentes no Xorg.
+exec_always --no-startup-id feh --bg-fill "$HOME/Downloads/Lain.jpg"
+# Para configurar monitores: xrandr --query
+# Exemplo: exec --no-startup-id xrandr --output HDMI-1 --mode 1920x1080 --right-of eDP-1
+
+# O Sway também definia HDMI-A-1 com arch.png. Configure esse segundo papel
+# de parede depois de confirmar os nomes reais dos monitores no xrandr.
+
+default_border pixel 1
+workspace 1
+
+### Teclado brasileiro (Xorg)
+exec --no-startup-id setxkbmap -layout br
+
+### Mouse
+# A configuração original era específica do dispositivo no Sway e não tem
+# conversão direta. Ajuste via xinput se necessário.
+
+### Atalhos básicos
+bindsym $mod+Return exec $term
+bindsym $mod+q kill
+bindsym $mod+space exec $menu
+bindsym $mod+e exec dolphin
+floating_modifier $mod normal
+bindsym $mod+Shift+c reload
+bindsym $mod+m exec i3-msg exit
+
+### Navegação e movimentação
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+### Workspaces
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
+
+### Layout
+bindsym $mod+Shift+h split h
+bindsym $mod+Shift+j split v
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+a layout toggle split
+bindsym $mod+f fullscreen toggle
+bindsym $mod+v floating toggle
+bindsym $mod+Shift+v focus mode_toggle
+
+### Teclas multimídia
+bindsym --locked XF86AudioPlay exec playerctl play-pause
+bindsym --locked XF86AudioPause exec playerctl play-pause
+bindsym --locked XF86AudioPrev exec playerctl previous
+bindsym --locked XF86AudioNext exec playerctl next
+bindsym --locked XF86AudioStop exec playerctl stop
+
+### Captura de tela no Xorg — requer maim e xclip
+bindsym Print exec --no-startup-id sh -c 'mkdir -p "$HOME/Capturas de tela"; maim | tee "$HOME/Capturas de tela/$(date +%Y-%m-%d_%H-%M-%S).png" | xclip -selection clipboard -t image/png'
+
+### Barra
+bar {
+    position bottom
+    tray_output none
+    status_command i3status-rs ~/.config/i3status-rust/config.toml
+    font pango:Terminess Nerd Font 12
+}
